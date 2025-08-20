@@ -5,9 +5,9 @@ import { LuFolderKanban } from "react-icons/lu";
 
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-import ProjectPieChart from "../Chart/ProjectPieChart";
-import EmployeeAreaChart from "../Chart/EmployeeAreaChart";
-import ProjectBarChart from "../Chart/ProjectBarChart";
+import ProjectPieChart from "../UI/Chart/ProjectPieChart";
+import EmployeeAreaChart from "../UI/Chart/EmployeeAreaChart";
+import ProjectBarChart from "../UI/Chart/ProjectBarChart";
 
 export default function Dashboard() {
   const [totalProjectByYear, setTotalProjectByYear] = useState(2025);
