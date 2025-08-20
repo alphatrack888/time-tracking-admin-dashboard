@@ -7,10 +7,10 @@ import {
   InputLabel,
   TablePagination,
 } from "@mui/material";
-import BlockConfirmationModal from "../Modals/BlockConfirmationModal";
-import DeleteConfirmationModal from "../Modals/DeleteConfirmationModal";
+import BlockConfirmationModal from "../UI/Modals/BlockConfirmationModal";
+import DeleteConfirmationModal from "../UI/Modals/DeleteConfirmationModal";
 import CompanyTable from "../UI/CompanyTable";
-import CompanyDetailsModal from "../Modals/CompanyDetailsModal";
+import CompanyDetailsModal from "../UI/Modals/CompanyDetailsModal";
 
 const companyData = [
   {
