@@ -29,7 +29,60 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user"],
     }),
+    VerifyOtp: builder.mutation({
+      query: (data) => {
+        const token = localStorage.getItem("otpToken");
+        console.log("vetifyOtpToken", token);
+        return {
+          url: "/auth/verify-email",
+          method: "post",
+          body: data,
+          headers: {
+            "content-type": "application/json",
+            token: token,
+          },
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
+    ResetPassword: builder.mutation({
+      query: (data) => {
+        const token = localStorage.getItem("verifiedOtpToken");
+        console.log({ token });
+        return {
+          url: "/auth/reset-password",
+          method: "post",
+          body: data,
+          headers: {
+            // "content-type": "application/json",
+            token: token,
+          },
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
+    changePassword: builder.mutation({
+      query: (data) => {
+        const accessToken = sessionStorage.getItem("accessToken");
+        return {
+          url: "/auth/change-password",
+          method: "POST",
+          body: data,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        };
+      },
+      invalidatesTags: ["user"],
+    }),
   }),
 });
 
-export const { useSigninMutation, useForgetPasswordMutation } = authApi;
+export const {
+  useSigninMutation,
+  useForgetPasswordMutation,
+  useVerifyOtpMutation,
+  useResetPasswordMutation,
+  useChangePasswordMutation,
+} = authApi;
