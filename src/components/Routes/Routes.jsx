@@ -12,7 +12,6 @@ import Profile from "../Dashboard/Profile";
 import PrivacyPolicy from "../Dashboard/PrivacyPolicy";
 import Subscription from "../Dashboard/Subscription";
 import AllCompanies from "../Dashboard/AllCompanies";
-import ProtectedRoute from "../../utils/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -38,9 +37,7 @@ const router = createBrowserRouter([
       {
         path: "",
         element: (
-          <ProtectedRoute>
             <DashboardLayout />
-          </ProtectedRoute>
         ),
         children: [
           {
