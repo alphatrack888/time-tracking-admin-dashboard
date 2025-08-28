@@ -5,19 +5,27 @@ import {
   FormControlLabel,
   Container,
   Grid,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineMailOpen } from "react-icons/hi";
 import { MdOutlineLock } from "react-icons/md";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 import logInImage from "../../public/Images/logIn.png";
 
-// import { useSignInMutation } from "../../Redux/api/authApi";
-// import { toast } from "sonner";
+import { useSigninMutation } from "../Redux/api/authApi.js";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  // const [login] = useSignInMutation();
+  const [signIn] = useSigninMutation();
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const onFinish = async (e) => {
     e.preventDefault();
@@ -29,24 +37,24 @@ const SignIn = () => {
     };
 
     console.log("signIn Data", values);
-    navigate("/", { replace: true });
-    // try {
-    //   const res = await login(data).unwrap();
-    //   localStorage.setItem("accessToken", res?.data?.accessToken);
-    //   localStorage.setItem("refreshToken", res?.data?.refreshToken);
 
-    //   if (res.success) {
-    //     toast.success("Login Successfully!");
-    //     navigate("/");
-    //   } else {
-    //     toast.error("Login Error.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error user login:", error);
-    //   if (error.data) {
-    //     toast.error("Something went wrong while logging in.");
-    //   }
-    // }
+    try {
+      const res = await signIn(values).unwrap();
+      sessionStorage.setItem("accessToken", res?.data?.accessToken);
+      sessionStorage.setItem("refreshToken", res?.data?.refreshToken);
+
+      if (res.success) {
+        toast.success("Login Successfully!");
+        navigate("/", { replace: true });
+      } else {
+        toast.error("Login Error.");
+      }
+    } catch (error) {
+      console.error("Error user login:", error);
+      if (error.data) {
+        toast.error("Something went wrong while logging in.");
+      }
+    }
   };
 
   return (
@@ -68,21 +76,40 @@ const SignIn = () => {
             variant="outlined"
             placeholder="Enter your email"
             InputProps={{
-              startAdornment: <HiOutlineMailOpen />,
+              startAdornment: <HiOutlineMailOpen className="mr-2" />,
             }}
           />
 
           <TextField
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             fullWidth
             required
             margin="normal"
             variant="outlined"
             placeholder="Enter your password"
             InputProps={{
-              startAdornment: <MdOutlineLock />,
+              startAdornment: <MdOutlineLock className="mr-2" />,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? (
+                      <IoEyeOff className="text-2xl text-black" />
+                    ) : (
+                      <IoEye className="text-2xl text-[#3F80AE]" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
           />
 
