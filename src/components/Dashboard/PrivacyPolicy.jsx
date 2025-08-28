@@ -1,68 +1,68 @@
 import JoditEditor from "jodit-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// import { toast } from "sonner";
-// import {
-//   useGetSettingsQuery,
-//   useUpdateSettingsMutation,
-// } from "../../../Redux/api/settingsApi";
-import { Button } from "@mui/material";
+import { toast } from "sonner";
+import { Button, LinearProgress } from "@mui/material";
+import {
+  useAddPrivacyPolicyMutation,
+  useGetPrivacyPolicyQuery,
+} from "../../Redux/api/settingsApi";
 
 const PrivacyPolicy = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
-  // const {
-  //   data: getSettingsData,
-  //   isLoading: isFetching,
-  //   error: fetchError,
-  //   refetch,
-  // } = useGetSettingsQuery();
-  // console.log(getSettingsData?.data?.termsOfService);
+  const {
+    data: getPrivacyData,
+    isLoading: isFetching,
+    error: fetchError,
+    refetch,
+  } = useGetPrivacyPolicyQuery();
 
-  // const [addSettings, { isLoading: isAdding }] = useAddSettingsMutation();
-  // const [updateSettings, { isLoading: isUpdating }] =
-  //   useUpdateSettingsMutation();
+  const privacyData = getPrivacyData?.data;
 
-  // useEffect(() => {
-  //   if (getSettingsData?.data.termsOfService) {
-  //     setContent(getSettingsData.data.termsOfService);
-  //   }
-  // }, [getSettingsData]);
+  console.log("privacy data", privacyData);
+
+  const [addPrivacyPolicy, { isLoading: isAdding }] =
+    useAddPrivacyPolicyMutation();
+
+  useEffect(() => {
+    if (privacyData?.content) {
+      setContent(privacyData?.content);
+    }
+  }, [privacyData]);
 
   const handleOnSave = async () => {
-    // try {
-    //   await updateSettings({ termsOfService: content }).unwrap();
-    //   toast.success("Terms and Conditions updated successfully!");
-    // if
-    // (getSettingsData?.data.termsOfService) { }
-    //  else {
-    //   // Add a new Terms and Conditions if not existing
-    //   await addSettings({ termsOfService: content }).unwrap();
-    //   toast.success("Terms and Conditions added successfully!");
-    // }
-    // refetch();
-    // } catch (error) {
-    //   toast.error("Failed to save Terms and Conditions. Please try again.");
-    //   console.error("Save error:", error);
-    // }
+    try {
+      const data = {
+        content: content,
+        type: "privacy-policy",
+      };
+      await addPrivacyPolicy(data).unwrap();
+      toast.success("Terms and Conditions added successfully!");
+
+      refetch();
+    } catch (error) {
+      toast.error("Failed to save Terms and Conditions. Please try again.");
+      console.error("Save error:", error);
+    }
   };
 
-  // if (isFetching || isUpdating) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <Spin size="large" tip="Loading Terms and Conditions..." />
-  //     </div>
-  //   );
-  // }
+  if (isFetching || isAdding) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LinearProgress size="large" tip="Loading Terms and Conditions..." />
+      </div>
+    );
+  }
 
-  // if (fetchError) {
-  //   return (
-  //     <div className="text-white">
-  //       Error loading Terms and Conditions. Please try again later.
-  //     </div>
-  //   );
-  // }
+  if (fetchError) {
+    return (
+      <div className="text-white">
+        Error loading Terms and Conditions. Please try again later.
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[90vh] bg-[#efefef] rounded-lg py-1 px-4">
