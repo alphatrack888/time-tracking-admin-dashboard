@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   TextField,
   Button,
   Typography,
-  Box,
   InputAdornment,
   IconButton,
 } from "@mui/material";
 import { FaRegEye } from "react-icons/fa";
 import { IoMdEyeOff } from "react-icons/io";
+import { useChangePasswordMutation } from "../../Redux/api/authApi";
+import { toast } from "sonner";
 
 export default function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -19,12 +20,14 @@ export default function ChangePassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [changePassword] = useChangePasswordMutation();
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowNewPassword = () => setShowNewPassword((show) => !show);
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (newPassword !== confirmPassword) {
@@ -32,7 +35,26 @@ export default function ChangePassword() {
       return;
     }
     setError("");
-    console.log("Password change request submitted");
+    const payload = {
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    };
+
+    try {
+      const response = await changePassword(payload).unwrap();
+      console.log("Password changed successfully:", response);
+
+      if (response.success) {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        toast.success("Password changed successfully!");
+      }
+    } catch (err) {
+      console.error("Error changing password:", err);
+      setError("Failed to change password. Please try again later.");
+    }
   };
 
   return (

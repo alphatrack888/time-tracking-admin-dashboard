@@ -13,7 +13,7 @@ import { GoEye } from "react-icons/go";
 import { SlLock } from "react-icons/sl";
 
 export default function CompanyTable({
-  filteredUsers,
+  companies,
   page,
   rowsPerPage,
   handleViewDetails,
@@ -41,9 +41,7 @@ export default function CompanyTable({
               <TableCell sx={{ fontWeight: 600, textAlign: "center" }}>
                 Company Location
               </TableCell>
-              <TableCell sx={{ fontWeight: 600, textAlign: "center" }}>
-                Total Budget
-              </TableCell>
+             
               <TableCell sx={{ fontWeight: 600, textAlign: "center" }}>
                 Status
               </TableCell>
@@ -53,35 +51,33 @@ export default function CompanyTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers
+            {companies
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((employee) => (
-                <TableRow key={employee.eiinNo}>
+              .map((company, index) => (
+                <TableRow key={company._id}>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {employee.serialNo}
+                    {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {employee.companyName}
+                    {company.name}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {employee.Email}
+                    {company.email}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {employee.Contact}
+                    {company.phone}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {employee.Location}
+                    {company.address}
                   </TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {employee.totalBudget}
-                  </TableCell>
+
                   <TableCell sx={{ textAlign: "center" }}>
                     <div
                       style={{
                         backgroundColor:
-                          employee.Status === "Active"
+                          company.status.toLowerCase() === "active"
                             ? "#008000"
-                            : employee.Status === "Inactive"
+                            : company.status.toLowerCase() === "inactive"
                             ? "#CC0505"
                             : "#f0ce0e",
                         color: "white",
@@ -90,14 +86,14 @@ export default function CompanyTable({
                         textAlign: "center",
                       }}
                     >
-                      {employee.Status}
+                      <p className="capitalize"> {company.status}</p>
                     </div>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <div className="flex items-center justify-center gap-2">
                       <IconButton
                         size="small"
-                        onClick={() => handleViewDetails(employee)}
+                        onClick={() => handleViewDetails(company)}
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
@@ -111,7 +107,7 @@ export default function CompanyTable({
                       </IconButton>
                       <IconButton
                         size="small"
-                        onClick={() => handleOpenBlockModal(employee)}
+                        onClick={() => handleOpenBlockModal(company)}
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
@@ -125,7 +121,7 @@ export default function CompanyTable({
                       </IconButton>
                       <IconButton
                         size="small"
-                        onClick={() => handleOpenDeleteModal(employee)}
+                        onClick={() => handleOpenDeleteModal(company)}
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
