@@ -10,14 +10,17 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-// import { useCreateSubscriptionMutation, useEditSubscriptionMutation } from "../../Redux/api/subscriptionApi";
+import { useAddSubscriptionPlanMutation } from "../../../Redux/api/subscriptionApi";
+import { toast } from "sonner";
 
 const SubscriptionModal = ({
   open,
   onClose,
   subscriptionData,
+  currentSubscription,
   onSave,
   editMode,
+  refetch,
 }) => {
   const [subscriptionName, setSubscriptionName] = useState("");
   const [subscriptionDescription, setSubscriptionDescription] = useState("");
@@ -25,45 +28,66 @@ const SubscriptionModal = ({
   const [subscriptionPrice, setSubscriptionPrice] = useState("");
   const [subscriptionInterval, setSubscriptionInterval] = useState("month");
   const [subscriptionFeatures, setSubscriptionFeatures] = useState([]);
+  const [error, setError] = useState("");
 
-  //   const [createSubscription] = useCreateSubscriptionMutation();
+  const [createSubscription] = useAddSubscriptionPlanMutation();
   //   const [editSubscription] = useEditSubscriptionMutation();
 
+  // console.log(subscriptionData);
+
   useEffect(() => {
-    if (editMode && subscriptionData) {
-      setSubscriptionName(subscriptionData.name);
-      setSubscriptionDescription(subscriptionData.description);
-      setSubscriptionCurrency(subscriptionData.currency);
-      setSubscriptionPrice(subscriptionData.price);
-      setSubscriptionInterval(subscriptionData.interval);
-      setSubscriptionFeatures(subscriptionData.features);
+    if (editMode && currentSubscription) {
+      setSubscriptionName(currentSubscription.name);
+      setSubscriptionDescription(currentSubscription.description);
+      setSubscriptionCurrency(currentSubscription.currency);
+      setSubscriptionPrice(currentSubscription.price);
+      setSubscriptionInterval(currentSubscription.interval);
+      setSubscriptionFeatures(currentSubscription.features);
     }
-  }, [editMode, subscriptionData]);
+  }, [editMode, currentSubscription]);
 
   const handleSavePackage = async () => {
+    // Check if the subscription name already exists in the data
+    const nameExists = subscriptionData.some(
+      (subscription) =>
+        subscription.name.toLowerCase() === subscriptionName.toLowerCase() &&
+        (!editMode || subscription.name !== subscriptionData.name) // Skip current subscription if editing
+    );
+
+    if (nameExists && !editMode) {
+      setError("Subscription name already exists.");
+      toast.error("Subscription name already exists.");
+      return;
+    }
+
+    setError("");
+
     const newPackage = {
       name: subscriptionName,
       description: subscriptionDescription,
       currency: subscriptionCurrency,
-      price: subscriptionPrice,
+      price: Number(subscriptionPrice),
       interval: subscriptionInterval,
       features: subscriptionFeatures,
     };
 
     console.log("new package", newPackage);
 
-    // try {
-    //   if (editMode) {
-    //     await editSubscription({ id: subscriptionData.id, ...newPackage }).unwrap();
-    //     console.log("Subscription edited successfully!");
-    //   } else {
-    //     await createSubscription(newPackage).unwrap();
-    //     console.log("Subscription created successfully!");
-    //   }
-    //   onSave(); // Call the onSave callback to refresh the data and close modal
-    // } catch (err) {
-    //   console.error("Error saving subscription:", err);
-    // }
+    try {
+      // if (editMode) {
+      //   await editSubscription({ id: subscriptionData.id, ...newPackage }).unwrap();
+      //   console.log("Subscription edited successfully!");
+      // } else {
+      const response = await createSubscription(newPackage).unwrap();
+      console.log("Subscription created successfully!", response);
+      if (response.success) {
+        toast.success("Subscription created successfully!");
+        refetch();
+        onSave(); // Call the onSave callback to refresh the data and close modal
+      }
+    } catch (err) {
+      console.error("Error saving subscription:", err);
+    }
   };
 
   return (
@@ -138,7 +162,7 @@ const SubscriptionModal = ({
 
             <TextField
               label="Features (comma separated)"
-              value={subscriptionFeatures.join(", ")}
+              value={subscriptionFeatures.join(",")}
               onChange={(e) =>
                 setSubscriptionFeatures(e.target.value.split(","))
               }

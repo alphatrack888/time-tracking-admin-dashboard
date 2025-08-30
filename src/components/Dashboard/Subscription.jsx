@@ -5,9 +5,13 @@ import { GoDotFill } from "react-icons/go";
 import SubscriptionModal from "../UI/Modals/SubscriptionModal";
 
 const Subscription = () => {
-  const { data: allSubscriptionData, isLoading } =
-    useGetSubscriptionPlansQuery();
+  const {
+    data: allSubscriptionData,
+    isLoading,
+    refetch,
+  } = useGetSubscriptionPlansQuery();
   const subscriptionData = allSubscriptionData?.data;
+  console.log("subscriptionData", subscriptionData);
 
   const [openModal, setOpenModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -40,7 +44,7 @@ const Subscription = () => {
   }
 
   return (
-    <div className="px-10 py-8 bg-[#efefef] h-[92vh] rounded-lg flex flex-col gap-5">
+    <div className="px-10 py-8 bg-[#efefef] rounded-lg flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <p className="text-3xl font-semibold">Our Subscription Plans</p>
         <Button
@@ -122,9 +126,11 @@ const Subscription = () => {
       <SubscriptionModal
         open={openModal}
         onClose={handleCloseModal}
-        subscriptionData={currentSubscription}
+        subscriptionData={subscriptionData}
+        currentSubscription={currentSubscription}
         onSave={handleSave}
         editMode={editMode}
+        refetch={refetch}
       />
     </div>
   );
