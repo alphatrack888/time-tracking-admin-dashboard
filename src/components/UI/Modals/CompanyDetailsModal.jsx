@@ -33,6 +33,7 @@ export default function CompanyDetailsModal({
                     borderRadius: "10px",
                   }}
                 />
+                <img src="" alt="" sizes="" srcset="" />
                 <div className="flex gap-5">
                   <div className="flex flex-col gap-2 font-medium">
                     <p>Company Name:</p>

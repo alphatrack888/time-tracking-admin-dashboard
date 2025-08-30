@@ -3,7 +3,13 @@ import { LuCalendar } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa";
 import { LuFolderKanban } from "react-icons/lu";
 
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+} from "@mui/material";
 
 import RevenueAreaChart from "../UI/Chart/RevenueAreaChart";
 import CompanyBarChart from "../UI/Chart/CompanyBarChart";
@@ -49,7 +55,11 @@ export default function Dashboard() {
 
   // console.log("yaaaaaaaaaaaaaaaaaar", year);
   if (isLoading || revenueByYearLoading || companyByYearLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LinearProgress size="large" tip="Loading Terms and Conditions..." />
+      </div>
+    );
   }
 
   return (
@@ -163,47 +173,6 @@ export default function Dashboard() {
               <CompanyBarChart companyByYear={companyByYear} />
             </div>
           </div>
-
-          {/* Project Pie Chart */}
-          {/* <div
-            className="bg-white shadow-xl flex-1 px-5 py-3"
-            style={{ minHeight: 320 }}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[#1A1A1A] font-semibold text-xl">
-                  Complete Project Monthly
-                </p>
-                <div className="flex items-center gap-2 mt-2">
-                  <p className="font-medium">20% complete daily</p>
-                </div>
-              </div>
-              <div className="w-28">
-                <FormControl fullWidth>
-                  <InputLabel id="service-year-label">
-                    <div className="flex items-center">
-                      <p>
-                        <LuCalendar fontSize={20} />
-                      </p>
-                    </div>
-                  </InputLabel>
-                  <Select
-                    labelId="service-year-label"
-                    id="service-year-select"
-                    value={completedProjectByYear}
-                    label="Year"
-                    onChange={handleCompletedProjectYearChange}
-                    className="h-8"
-                  >
-                    <MenuItem value={2025}>2025</MenuItem>
-                    <MenuItem value={2024}>2024</MenuItem>
-                    <MenuItem value={2023}>2023</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
-            <ProjectPieChart selectedYear={completedProjectByYear} />
-          </div> */}
         </div>
       </div>
     </div>

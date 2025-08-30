@@ -7,6 +7,7 @@ import {
   InputLabel,
   TablePagination,
   Button,
+  LinearProgress,
 } from "@mui/material";
 import BlockConfirmationModal from "../UI/Modals/BlockConfirmationModal";
 import DeleteConfirmationModal from "../UI/Modals/DeleteConfirmationModal";
@@ -112,7 +113,12 @@ export default function AllCompanies() {
     setPage(0);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LinearProgress size="large" tip="Loading Terms and Conditions..." />
+      </div>
+    );
   if (isError) return <div>Error fetching data...</div>;
 
   const filteredCompanies = filterCompanies();
