@@ -51,8 +51,14 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Error user login:", error);
-      if (error.data) {
-        toast.error("Something went wrong while logging in.");
+      if (
+        error.data.message ===
+        "No account found with this email, please try with valid email or create an account."
+      ) {
+        toast.error("Wrong User email");
+      }
+      if (error.data.message === "Incorrect password, please try again.") {
+        toast.error("Incorrect Password");
       }
     }
   };
