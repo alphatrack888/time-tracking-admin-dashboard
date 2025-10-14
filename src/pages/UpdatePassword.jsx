@@ -1,19 +1,18 @@
-import React from "react";
-import { Button, TextField, Grid, Typography, Container } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { MdOutlineLock } from "react-icons/md";
-import { HiArrowLeft } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-// import { useResetPasswordMutation } from "../../Redux/api/authApi";
-// import { toast } from "sonner";
+import { toast } from "sonner";
+import { useResetPasswordMutation } from "../Redux/api/authApi";
 
 const UpdatePassword = () => {
   const navigate = useNavigate();
-  // const [resetPassword] = useResetPasswordMutation();
+  const [resetPassword] = useResetPasswordMutation();
 
   const onFinish = async (event) => {
     event.preventDefault();
 
     const form = new FormData(event.target);
+
     const values = {
       password: form.get("password"),
       confirmPassword: form.get("confirmPassword"),
@@ -21,36 +20,39 @@ const UpdatePassword = () => {
 
     console.log("Update Password Values", values);
 
-    navigate("/sign-in", { replace: true });
+    try {
+      const data = {
+        newPassword: values.password,
+        confirmPassword: values.confirmPassword,
+      };
 
-    // try {
-    //   const data = {
-    //     newPassword: values.password,
-    //     confirmPassword: values.confirmPassword,
-    //   };
+      if (values.password !== values.confirmPassword) {
+        toast.error("Passwords do not match.");
+        return;
+      }
 
-    //   const token = localStorage.getItem("verifiedOtpToken");
-    //   if (!token) {
-    //     toast.error("Session expired. Please start the reset process again.");
-    //     navigate("/forgot-password");
-    //     return;
-    //   }
-
-    //   const response = await resetPassword(data).unwrap();
-    //   if (response.success) {
-    //     toast.success("Password updated successfully!");
-    //     navigate("/sign-in");
-    //   }
-    // } catch (error) {
-    //   if (error.response) {
-    //     toast.error(
-    //       error.response.data.message ||
-    //         "Failed to update password. Please try again."
-    //     );
-    //   } else {
-    //     toast.error("An unexpected error occurred. Please try again.");
-    //   }
-    // }
+      const response = await resetPassword(data).unwrap();
+      if (response.success) {
+        toast.success("Password updated successfully!");
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      console.log("update password error", error);
+      if (error.response) {
+        toast.error(
+          error.response.data.message ||
+            "Failed to update password. Please try again."
+        );
+      }
+      if (
+        error.data?.message ===
+        "You don't have authorization to reset your password, please verify your account first."
+      ) {
+        toast.error("Please Verify Your Account First");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    }
   };
 
   return (
