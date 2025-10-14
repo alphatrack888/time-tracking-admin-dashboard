@@ -51,7 +51,7 @@ const ForgotPassword = () => {
     <div className="bg-[#fff] min-h-[66vh] max-w-2xl flex flex-col gap-5 items-center mx-auto my-40 p-5 rounded-lg">
       <div className="bg-[#ECF2F7] rounded-3xl p-8">
         <div className="mb-6">
-          <div className="flex items-start gap-3">
+          <div className="flex items-center gap-3">
             <Link to="/sign-in" className="cursor-pointer">
               <HiArrowLeft style={{ fontSize: "24px", color: "black" }} />
             </Link>
