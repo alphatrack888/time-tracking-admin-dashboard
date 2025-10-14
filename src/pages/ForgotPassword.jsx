@@ -25,7 +25,7 @@ const ForgotPassword = () => {
       toast.error("Please enter a valid email address.");
       return;
     }
-    const data = email;
+    const data = { email };
     console.log("Success:", data);
     try {
       const response = await forgetPassword(data).unwrap();
