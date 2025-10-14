@@ -34,7 +34,7 @@ const authApi = baseApi.injectEndpoints({
         const token = localStorage.getItem("otpToken");
         console.log("vetifyOtpToken", token);
         return {
-          url: "/auth/verify-email",
+          url: "/auth/verify-account",
           method: "post",
           body: data,
           headers: {
@@ -47,15 +47,15 @@ const authApi = baseApi.injectEndpoints({
     }),
     ResetPassword: builder.mutation({
       query: (data) => {
-        const token = localStorage.getItem("verifiedOtpToken");
-        console.log({ token });
+        const token = sessionStorage.getItem("verifiedOtpToken");
+        console.log(token);
         return {
           url: "/auth/reset-password",
           method: "post",
           body: data,
           headers: {
             // "content-type": "application/json",
-            token: token,
+            Authorization: token,
           },
         };
       },

@@ -14,11 +14,11 @@ export default function Header() {
   return (
     <div className="flex items-center justify-end bg-[#fff] w-full px-10 py-4">
       <div className="flex items-center gap-4">
-        <div className="bg-[#f0f0f0] p-2 rounded-full hover:bg-[#E0E1E2] transition-colors duration-300">
+        {/* <div className="bg-[#f0f0f0] p-2 rounded-full hover:bg-[#E0E1E2] transition-colors duration-300">
           <Link to="/notifications">
             <PiBellSimpleRingingBold fontSize={24} />
           </Link>
-        </div>
+        </div> */}
         <Button
           sx={{
             color: "black",

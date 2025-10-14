@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // SubscriptionModal.js
 import React, { useState, useEffect } from "react";
 import {

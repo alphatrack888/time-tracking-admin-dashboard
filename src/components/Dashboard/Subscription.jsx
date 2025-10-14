@@ -97,7 +97,7 @@ const Subscription = () => {
                   ))}
                 </div>
 
-                <Button
+                {/* <Button
                   sx={{
                     textTransform: "none",
                     fontWeight: 500,
@@ -115,7 +115,7 @@ const Subscription = () => {
                   onClick={() => handleOpenModal(subscription)}
                 >
                   Edit Plan
-                </Button>
+                </Button> */}
               </CardContent>
             </Card>
           </div>
