@@ -17,8 +17,8 @@ export default function CompanyTable({
   page,
   rowsPerPage,
   handleViewDetails,
-  handleOpenBlockModal,
-  handleOpenDeleteModal,
+  // handleOpenBlockModal,
+  // handleOpenDeleteModal,
 }) {
   return (
     <div>
@@ -41,7 +41,7 @@ export default function CompanyTable({
               <TableCell sx={{ fontWeight: 600, textAlign: "center" }}>
                 Company Location
               </TableCell>
-             
+
               <TableCell sx={{ fontWeight: 600, textAlign: "center" }}>
                 Status
               </TableCell>
@@ -97,15 +97,20 @@ export default function CompanyTable({
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
-                          bgcolor: "#658065",
+                          bgcolor: "#3F80AE",
                           width: "30px",
                           height: "30px",
                           borderRadius: "4px",
+                          "&:hover": {
+                            bgcolor: "#fff",
+                            border: "1px solid #3F80AE",
+                            color: "#3F80AE",
+                          },
                         }}
                       >
                         <GoEye />
                       </IconButton>
-                      <IconButton
+                      {/* <IconButton
                         size="small"
                         onClick={() => handleOpenBlockModal(company)}
                         sx={{
@@ -132,7 +137,7 @@ export default function CompanyTable({
                         }}
                       >
                         <AiTwotoneDelete />
-                      </IconButton>
+                      </IconButton> */}
                     </div>
                   </TableCell>
                 </TableRow>
