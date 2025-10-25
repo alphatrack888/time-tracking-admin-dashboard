@@ -11,8 +11,6 @@ export default defineConfig({
     allowedHosts: true,
   },
   preview: {
-    allowedHosts: ["admin.alphatrack.app", ".alphatrack.app"],
-    host: "0.0.0.0",
-    port: 9501,
+    allowedHosts: ["admin.alphatrack.app"], // 👈 add your host here
   },
 });
