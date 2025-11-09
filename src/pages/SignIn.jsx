@@ -61,7 +61,6 @@ const SignIn = () => {
 
       // Catch proxy/network errors
       if (
-        message.includes("network error") ||
         message.includes("proxy") ||
         message.includes("407") ||
         message.includes("unexpected_proxy_auth")

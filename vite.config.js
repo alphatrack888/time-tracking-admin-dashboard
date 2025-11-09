@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { defineConfig } from "vite";
 import { createRequire } from 'module';
 import react from "@vitejs/plugin-react";
