@@ -53,26 +53,25 @@ const SignIn = () => {
       console.error("Error user login:", error);
 
       // Normalize message
-      const message = (
-        error?.message ||
-        error?.error ||
-        (typeof error?.data === "string" ? error.data : "")
-      ).toLowerCase();
+      // const message = (
+      //   error?.message ||
+      //   error?.error ||
+      //   (typeof error?.data === "string" ? error.data : "")
+      // ).toLowerCase();
 
-      // Catch proxy/network errors
-      if (
-        message.includes("network error") ||
-        message.includes("proxy") ||
-        message.includes("407") ||
-        message.includes("unexpected_proxy_auth")
-      ) {
-        toast.error("OTP verification is required. Please verify your OTP.");
-        navigate("/verify-otp", {
-          state: { email: values.email },
-          replace: true,
-        });
-        return;
-      }
+      // // Catch proxy/network errors
+      // if (
+      //   message.includes("proxy") ||
+      //   message.includes("407") ||
+      //   message.includes("unexpected_proxy_auth")
+      // ) {
+      //   toast.error("OTP verification is required. Please verify your OTP.");
+      //   navigate("/verify-otp", {
+      //     state: { email: values.email },
+      //     replace: true,
+      //   });
+      //   return;
+      // }
 
       // API-level errors (only if request succeeded)
       const apiMessage = error?.data?.message || "";
