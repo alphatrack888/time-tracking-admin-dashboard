@@ -11,7 +11,7 @@ const authApi = baseApi.injectEndpoints({
           "Content-Type": "application/json",
         },
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["user"],
     }),
     ForgetPassword: builder.mutation({
       query: (data) => {

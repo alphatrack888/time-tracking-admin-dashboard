@@ -12,6 +12,13 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 9501,
     allowedHosts: true,
+    proxy: {
+      "/api/v1": {
+        target: "https://api.alphatrack.app",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   preview: {
     allowedHosts: ["admin.alphatrack.app"], // 👈 add your host here

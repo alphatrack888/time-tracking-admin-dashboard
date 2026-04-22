@@ -42,54 +42,35 @@ const SignIn = () => {
       const res = await signIn(values).unwrap();
 
       if (res.success) {
-        toast.success("Login Successfully!");
+        toast.success(res.message || "Login Successfully!");
         sessionStorage.setItem("accessToken", res?.data?.accessToken);
         sessionStorage.setItem("refreshToken", res?.data?.refreshToken);
         navigate("/");
       } else {
-        toast.error("Login Error.");
+        toast.error(res.message || "Login Error.");
       }
     } catch (error) {
       console.error("Error user login:", error);
 
-      // Normalize message
-      // const message = (
-      //   error?.message ||
-      //   error?.error ||
-      //   (typeof error?.data === "string" ? error.data : "")
-      // ).toLowerCase();
-
-      // Catch proxy/network errors
-      // if (
-      //   message.includes("proxy") ||
-      //   message.includes("407") ||
-      //   message.includes("unexpected_proxy_auth")
-      // ) {
-      //   toast.error("OTP verification is required. Please verify your OTP.");
-      //   navigate("/verify-otp", {
-      //     state: { email: values.email },
-      //     replace: true,
-      //   });
-      //   return;
-      // }
-
-      // API-level errors (only if request succeeded)
-      const apiMessage = error?.data?.message || "";
-      if (apiMessage === "Incorrect password, please try again.") {
-        toast.error("Incorrect Password");
+      // Handle Network Error (status is undefined when request fails to reach server)
+      if (error?.data === "Network Error" || !error?.status) {
+        toast.error("Network Error: Unable to connect to the server. Please check your internet connection or backend status.");
         return;
       }
 
-      if (
+      // API-level errors
+      const apiMessage = error?.data?.message || error?.data || "Login failed. Please try again later.";
+      
+      if (apiMessage === "Incorrect password, please try again.") {
+        toast.error("Incorrect Password");
+      } else if (
         apiMessage ===
         "No account found with this email, please try with valid email or create an account."
       ) {
         toast.error("User Not Found With This E-Mail");
-        return;
+      } else {
+        toast.error(apiMessage);
       }
-
-      // Generic fallback
-      toast.error("Login failed. Please try again later.");
     }
   };
 
