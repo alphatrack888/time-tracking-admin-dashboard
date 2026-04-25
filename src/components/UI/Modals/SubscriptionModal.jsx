@@ -11,7 +11,7 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import { useAddSubscriptionPlanMutation } from "../../../Redux/api/subscriptionApi";
+import { useAddSubscriptionPlanMutation, useEditSubscriptionPlanMutation } from "../../../Redux/api/subscriptionApi";
 import { toast } from "sonner";
 
 const SubscriptionModal = ({
@@ -32,7 +32,7 @@ const SubscriptionModal = ({
   const [error, setError] = useState("");
 
   const [createSubscription] = useAddSubscriptionPlanMutation();
-  //   const [editSubscription] = useEditSubscriptionMutation();
+    const [editSubscription] = useEditSubscriptionPlanMutation();
 
   // console.log(subscriptionData);
 
@@ -75,16 +75,18 @@ const SubscriptionModal = ({
     console.log("new package", newPackage);
 
     try {
-      // if (editMode) {
-      //   await editSubscription({ id: subscriptionData.id, ...newPackage }).unwrap();
-      //   console.log("Subscription edited successfully!");
-      // } else {
-      const response = await createSubscription(newPackage).unwrap();
-      console.log("Subscription created successfully!", response);
-      if (response.success) {
-        toast.success("Subscription created successfully!");
-        refetch();
-        onSave(); // Call the onSave callback to refresh the data and close modal
+      if (editMode) {
+        await editSubscription({ id: currentSubscription._id, payload: newPackage }).unwrap();
+        onSave();
+        console.log("Subscription edited successfully!");
+      } else {
+        const response = await createSubscription(newPackage).unwrap();
+        console.log("Subscription created successfully!", response);
+        if (response.success) {
+          toast.success("Subscription created successfully!");
+          refetch();
+          onSave(); // Call the onSave callback to refresh the data and close modal
+        }
       }
     } catch (err) {
       console.error("Error saving subscription:", err);

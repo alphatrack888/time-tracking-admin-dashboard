@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Card, CardContent, Button, LinearProgress } from "@mui/material";
-import { useGetSubscriptionPlansQuery } from "../../Redux/api/subscriptionApi";
+import { useDeleteSubscriptionPlanMutation, useGetSubscriptionPlansQuery } from "../../Redux/api/subscriptionApi";
 import { GoDotFill } from "react-icons/go";
 import SubscriptionModal from "../UI/Modals/SubscriptionModal";
+import { MdDeleteForever } from "react-icons/md";
 
 const Subscription = () => {
+  const [deleteSubscription] = useDeleteSubscriptionPlanMutation();
   const {
     data: allSubscriptionData,
     isLoading,
@@ -29,6 +31,15 @@ const Subscription = () => {
   };
 
   const handleCloseModal = () => setOpenModal(false);
+
+  const handleDeleteSubscription = async (id) => {
+    try {
+      await deleteSubscription(id).unwrap();
+      await refetch();
+    } catch (error) {
+      console.error("Error deleting subscription:", error);
+    }
+  };
 
   const handleSave = () => {
     // This will trigger data refresh after adding/editing
@@ -69,7 +80,7 @@ const Subscription = () => {
             <div className="bg-[#3F80AE] rounded-lg py-3 px-5 text-white">
               <div className="flex items-center justify-between">
                 <p className="text-lg font-semibold">{subscription.name}</p>
-                <p className="text-lg font-semibold"> ${subscription.price}</p>
+                <p className="text-lg font-semibold">{subscription.price}</p>
               </div>
               <p className="text-xs mt-2">Payment Package</p>
             </div>
@@ -81,9 +92,12 @@ const Subscription = () => {
               }}
             >
               <CardContent>
-                <div className="flex flex-col gap-3 text-center text-white min-h-[300px]">
+                <div className="relative flex flex-col gap-3 text-center text-white min-h-[300px]">
+                  <span onClick={()=>handleDeleteSubscription(subscription._id)} className="absolute top-0 right-0 text-red-400 bg-white p-1 rounded-full">
+                    <MdDeleteForever className="size-5"/>
+                  </span>
                   <p className="text-2xl">{subscription.title}</p>
-                  <p className="text-3xl font-medium">${subscription.price}</p>
+                  <p className="text-3xl font-medium">{subscription.price} {subscription.currency}</p>
                   <p className="text-sm text-justify">
                     {subscription.description}
                   </p>
@@ -97,7 +111,7 @@ const Subscription = () => {
                   ))}
                 </div>
 
-                {/* <Button
+                <Button
                   sx={{
                     textTransform: "none",
                     fontWeight: 500,
@@ -115,7 +129,7 @@ const Subscription = () => {
                   onClick={() => handleOpenModal(subscription)}
                 >
                   Edit Plan
-                </Button> */}
+                </Button>
               </CardContent>
             </Card>
           </div>
