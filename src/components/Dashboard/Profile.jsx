@@ -29,6 +29,7 @@ export default function Profile() {
     }
   };
 
+  // handle submit
   const handleSubmit = () => {
     console.log({
       name,
