@@ -32,7 +32,7 @@ const SubscriptionModal = ({
   const [error, setError] = useState("");
 
   const [createSubscription] = useAddSubscriptionPlanMutation();
-    const [editSubscription] = useEditSubscriptionPlanMutation();
+  const [editSubscription] = useEditSubscriptionPlanMutation();
 
   // console.log(subscriptionData);
 
@@ -128,11 +128,23 @@ const SubscriptionModal = ({
               multiline
               rows={3}
             />
+            {/* <TextField
+              label="Currency"
+              value={subscriptionCurrency}
+              onChange={(e) => setSubscriptionCurrency(e.target.value)}
+              fullWidth
+            /> */}
             <TextField
               label="Currency"
               value={subscriptionCurrency}
               onChange={(e) => setSubscriptionCurrency(e.target.value)}
               fullWidth
+              required // Adds the asterisk and native validation
+              inputProps={{
+                maxLength: 3, // Prevents typing more than 3 characters
+              }}
+              helperText={subscriptionCurrency.length > 0 && subscriptionCurrency.length < 3 ? "Use 3-letter code (e.g., USD)" : ""}
+              error={subscriptionCurrency.length > 0 && subscriptionCurrency.length < 3}
             />
             <TextField
               label="Price"

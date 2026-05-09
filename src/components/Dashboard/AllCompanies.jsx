@@ -13,7 +13,7 @@ import BlockConfirmationModal from "../UI/Modals/BlockConfirmationModal";
 import DeleteConfirmationModal from "../UI/Modals/DeleteConfirmationModal";
 import CompanyTable from "../UI/CompanyTable";
 import CompanyDetailsModal from "../UI/Modals/CompanyDetailsModal";
-import { useGetAllCompaniesQuery } from "../../Redux/api/companyApi";
+import { useDeleteCompanyMutation, useGetAllCompaniesQuery } from "../../Redux/api/companyApi";
 import AddCompanyModal from "../UI/Modals/AddCompanyModal";
 
 export default function AllCompanies() {
@@ -23,6 +23,7 @@ export default function AllCompanies() {
     isError,
   } = useGetAllCompaniesQuery();
   const allCompanies = allCompanyData?.data?.data;
+  const {deleteCompany} = useDeleteCompanyMutation();
   console.log("all company", allCompanies);
 
   const [searchText, setSearchText] = useState("");
@@ -101,6 +102,7 @@ export default function AllCompanies() {
 
   const handleDeleteCompany = () => {
     console.log(`Deleted ${selectedCompany.name}`);
+    deleteCompany(selectedCompany._id);
     handleCloseDeleteModal();
   };
 

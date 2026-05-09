@@ -11,6 +11,7 @@ import {
 import { AiTwotoneDelete } from "react-icons/ai";
 import { GoEye } from "react-icons/go";
 import { SlLock } from "react-icons/sl";
+import { useDeleteCompanyMutation } from "../../Redux/api/companyApi";
 
 export default function CompanyTable({
   companies,
@@ -20,6 +21,7 @@ export default function CompanyTable({
   // handleOpenBlockModal,
   // handleOpenDeleteModal,
 }) {
+  const [deleteCompany] = useDeleteCompanyMutation();
   return (
     <div>
       <TableContainer component={Paper} sx={{ border: "1px solid #e6e6e6" }}>
@@ -112,7 +114,7 @@ export default function CompanyTable({
                       </IconButton>
                       {/* <IconButton
                         size="small"
-                        onClick={() => handleOpenBlockModal(company)}
+                        // onClick={() => handleOpenBlockModal(company)}
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
@@ -123,10 +125,10 @@ export default function CompanyTable({
                         }}
                       >
                         <SlLock />
-                      </IconButton>
+                      </IconButton> */}
                       <IconButton
                         size="small"
-                        onClick={() => handleOpenDeleteModal(company)}
+                        onClick={() => deleteCompany(company._id)}
                         sx={{
                           color: "#fff",
                           fontSize: "20px",
@@ -137,7 +139,7 @@ export default function CompanyTable({
                         }}
                       >
                         <AiTwotoneDelete />
-                      </IconButton> */}
+                      </IconButton>
                     </div>
                   </TableCell>
                 </TableRow>
