@@ -34,7 +34,7 @@ const SubscriptionModal = ({
   const [createSubscription] = useAddSubscriptionPlanMutation();
   const [editSubscription] = useEditSubscriptionPlanMutation();
 
-  // console.log(subscriptionData);
+  console.log(subscriptionData);
 
   useEffect(() => {
     if (editMode && currentSubscription) {
