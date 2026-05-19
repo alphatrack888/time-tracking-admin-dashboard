@@ -14,6 +14,15 @@ import {
 import { useAddSubscriptionPlanMutation, useEditSubscriptionPlanMutation } from "../../../Redux/api/subscriptionApi";
 import { toast } from "sonner";
 
+const isValidUrl = (urlString) => {
+  try {
+    new URL(urlString);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 const SubscriptionModal = ({
   open,
   onClose,
@@ -29,6 +38,7 @@ const SubscriptionModal = ({
   const [subscriptionPrice, setSubscriptionPrice] = useState("");
   const [subscriptionInterval, setSubscriptionInterval] = useState("month");
   const [subscriptionFeatures, setSubscriptionFeatures] = useState([]);
+  const [subscriptionPaymentUrl, setSubscriptionPaymentUrl] = useState("");
   const [error, setError] = useState("");
 
   const [createSubscription] = useAddSubscriptionPlanMutation();
@@ -44,6 +54,7 @@ const SubscriptionModal = ({
       setSubscriptionPrice(currentSubscription.price);
       setSubscriptionInterval(currentSubscription.interval);
       setSubscriptionFeatures(currentSubscription.features);
+      setSubscriptionPaymentUrl(currentSubscription.paymentUrl || "");
     }
   }, [editMode, currentSubscription]);
 
@@ -61,6 +72,18 @@ const SubscriptionModal = ({
       return;
     }
 
+    if (!subscriptionPaymentUrl) {
+      setError("Payment URL is required.");
+      toast.error("Payment URL is required.");
+      return;
+    }
+
+    if (!isValidUrl(subscriptionPaymentUrl)) {
+      setError("Please enter a valid Payment URL.");
+      toast.error("Please enter a valid Payment URL.");
+      return;
+    }
+
     setError("");
 
     const newPackage = {
@@ -70,6 +93,7 @@ const SubscriptionModal = ({
       price: Number(subscriptionPrice),
       interval: subscriptionInterval,
       features: subscriptionFeatures,
+      paymentUrl: subscriptionPaymentUrl,
     };
 
     console.log("new package", newPackage);
@@ -174,6 +198,20 @@ const SubscriptionModal = ({
                 />
               </RadioGroup>
             </FormControl>
+
+            <TextField
+              label="Payment URL"
+              value={subscriptionPaymentUrl}
+              onChange={(e) => setSubscriptionPaymentUrl(e.target.value)}
+              fullWidth
+              required
+              error={subscriptionPaymentUrl.length > 0 && !isValidUrl(subscriptionPaymentUrl)}
+              helperText={
+                subscriptionPaymentUrl.length > 0 && !isValidUrl(subscriptionPaymentUrl)
+                  ? "Please enter a valid URL (e.g., https://example.com)"
+                  : ""
+              }
+            />
 
             <TextField
               label="Features (comma separated)"
