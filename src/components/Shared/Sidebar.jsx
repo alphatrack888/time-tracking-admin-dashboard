@@ -10,6 +10,7 @@ import { LuCookingPot } from "react-icons/lu";
 import { MdLogout } from "react-icons/md";
 import { FaPodcast } from "react-icons/fa6";
 import { SiSpeedtest } from "react-icons/si";
+import { PiBellSimpleRingingBold, PiFileTextBold } from "react-icons/pi";
 
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
@@ -25,9 +26,14 @@ export default function Sidebar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("user");
+    // ProtectedRoute (src/utils/ProtectedRoute.jsx) and every API slice
+    // read the session token from sessionStorage, not localStorage — this
+    // was clearing the wrong storage, so "Log Out" never actually revoked
+    // access: navigating back or reloading a protected route afterward
+    // still worked, since the real token was untouched.
+    sessionStorage.removeItem("accessToken");
+    sessionStorage.removeItem("refreshToken");
+    sessionStorage.removeItem("user");
     navigate("/sign-in", { replace: true });
   };
 
@@ -50,6 +56,16 @@ export default function Sidebar() {
             to: "/all-companies",
             icon: <FaRegUser fontSize={24} />,
             label: "All Company List",
+          },
+          {
+            to: "/reports",
+            icon: <PiFileTextBold fontSize={24} />,
+            label: "Reports",
+          },
+          {
+            to: "/notifications",
+            icon: <PiBellSimpleRingingBold fontSize={24} />,
+            label: "Notifications",
           },
 
           {

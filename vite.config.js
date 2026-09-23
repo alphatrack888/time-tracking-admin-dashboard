@@ -16,7 +16,7 @@ export default defineConfig({
     allowedHosts: "all", // ✅ FIXED
     proxy: {
       "/api/v1": {
-        target: "https://api.alphatrack.app",
+        target: "http://localhost:5055",
         changeOrigin: true,
         secure: false,
       },

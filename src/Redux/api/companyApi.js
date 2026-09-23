@@ -18,6 +18,24 @@ const companyApi = baseApi.injectEndpoints({
       },
       providesTags: ["company"],
     }),
+    // Reports filters (Phase 8): every employee, optionally scoped to one
+    // company. A large limit is passed since this feeds a filter dropdown,
+    // not a paginated table.
+    getEmployees: builder.query({
+      query: ({ company } = {}) => {
+        const accessToken = sessionStorage.getItem("accessToken");
+        return {
+          url: "/user",
+          method: "GET",
+          params: { role: "employee", limit: 1000, ...(company && { company }) },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      providesTags: ["company"],
+    }),
     createCompany: builder.mutation({
       query: (data) => {
         const accessToken = sessionStorage.getItem("accessToken");
@@ -74,4 +92,10 @@ const companyApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllCompaniesQuery, useCreateCompanyMutation, useUpdateCompanyMutation, useDeleteCompanyMutation } = companyApi;
+export const {
+  useGetAllCompaniesQuery,
+  useGetEmployeesQuery,
+  useCreateCompanyMutation,
+  useUpdateCompanyMutation,
+  useDeleteCompanyMutation,
+} = companyApi;

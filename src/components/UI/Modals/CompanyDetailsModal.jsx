@@ -1,12 +1,10 @@
 import { Modal } from "@mui/material";
-import { getImageUrl } from "../../../utils/baseUrl";
 
 export default function CompanyDetailsModal({
   openDetailsModal,
   handleCloseModal,
   selectedCompany,
 }) {
-  const imageUrl = getImageUrl();
   return (
     <div>
       <Modal
@@ -24,7 +22,7 @@ export default function CompanyDetailsModal({
               <p className="font-medium mb-3">Company Details</p>
               <div className="flex gap-10">
                 <img
-                  src={`${imageUrl}/${selectedCompany?.profile}`}
+                  src={selectedCompany?.profile}
                   alt={selectedCompany.name}
                   style={{
                     width: "120px",
