@@ -36,7 +36,14 @@ export default function NotificationBell() {
     useMarkAllNotificationsReadMutation();
 
   const notifications = data?.data?.data ?? [];
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  // The server computes the true unread count across ALL of the user's
+  // notifications (Phase 12); filtering the fetched page itself would
+  // undercount once there are more than DROPDOWN_LIMIT unread — e.g. a
+  // long-running session where unread items pile up past the first page.
+  // Falls back to the page-local count only if an older backend build
+  // hasn't started sending meta.unreadCount yet.
+  const unreadCount =
+    data?.data?.meta?.unreadCount ?? notifications.filter((n) => !n.isRead).length;
 
   const open = Boolean(anchorEl);
   const handleOpen = (event) => setAnchorEl(event.currentTarget);
