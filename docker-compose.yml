@@ -1,0 +1,14 @@
+services:
+  admin-dashboard:
+    build:
+      context: .
+      target: prod
+    image: shfayetwt/time-tracking-admin-dashboard:latest
+    container_name: admin-dashboard
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
