@@ -1,7 +1,7 @@
 # Production runtime; images are built and published by GitHub Actions.
 services:
   admin-dashboard:
-    image: shfayetwt/time-tracking-admin-dashboard:latest
+    image: alphatrack888/time-tracking-admin-dashboard:latest
     container_name: admin-dashboard
     restart: unless-stopped
     ports:

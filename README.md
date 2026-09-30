@@ -9,7 +9,7 @@ The existing Ubuntu host Nginx terminates HTTPS and proxies to
 
 PRs targeting `main` run `npm ci`, lint, and a production build.
 Pushes to `main` also publish the `prod` Docker image for `linux/arm64`
-to `shfayetwt/time-tracking-admin-dashboard`, tagged `latest` and the commit SHA.
+to `alphatrack888/time-tracking-admin-dashboard`, tagged `latest` and the commit SHA.
 Deployment uses the exact image digest from that run, waits for container health,
 and checks HTTP on `127.0.0.1:8081`. Releases are serialized.
 Failure fails the workflow; automatic rollback is not configured.
@@ -134,7 +134,7 @@ For subsequent image releases, from the same Compose directory use a previous
 successful commit tag:
 
 ```sh
-export ADMIN_IMAGE=shfayetwt/time-tracking-admin-dashboard:<previous-commit-sha>
+export ADMIN_IMAGE=alphatrack888/time-tracking-admin-dashboard:<previous-commit-sha>
 compose_admin() {
   printf 'services:\n  admin-dashboard:\n    image: %s\n' "$ADMIN_IMAGE" |
     docker compose -f docker-compose.yml -f - "$@"
