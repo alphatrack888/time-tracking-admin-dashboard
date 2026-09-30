@@ -83,8 +83,8 @@ jobs:
           build-args: |
             VITE_BASE_URL=${{ env.VITE_BASE_URL }}
           tags: |
-            shfayetwt/time-tracking-admin-dashboard:latest
-            shfayetwt/time-tracking-admin-dashboard:${{ github.sha }}
+            alphatrack888/time-tracking-admin-dashboard:latest
+            alphatrack888/time-tracking-admin-dashboard:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -98,7 +98,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           ADMIN_DEPLOY_PATH: ${{ secrets.ADMIN_DEPLOY_PATH }}
-          ADMIN_IMAGE: shfayetwt/time-tracking-admin-dashboard@${{ needs.build-and-push.outputs.digest }}
+          ADMIN_IMAGE: alphatrack888/time-tracking-admin-dashboard@${{ needs.build-and-push.outputs.digest }}
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_SSH_USER || 'deploy' }}
