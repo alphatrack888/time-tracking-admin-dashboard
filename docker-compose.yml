@@ -1,0 +1,8 @@
+# Production runtime; images are built and published by GitHub Actions.
+services:
+  admin-dashboard:
+    image: shfayetwt/time-tracking-admin-dashboard:latest
+    container_name: admin-dashboard
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8081:80"
